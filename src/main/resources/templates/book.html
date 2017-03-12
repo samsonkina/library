@@ -1,0 +1,61 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::site-head">
+    <title>книги</title>
+    <script>
+        $(document).ready(function () {
+            $('#bookAddForm select[name=title]').select2({
+                placeholder: 'Название',
+                width: '30%',
+                allowClear: true
+            });
+        });
+    </script>
+</head>
+<body>
+<div th:replace="layout::header"></div>
+<form id="bookAddForm" th:action="@{/book/add}" method="post">
+    Серийный номер <input type="text" name="serialNumber"/>
+    <select name="title">
+        <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+        <!--/*@thymesVar id="titles" type="home.library.entity.Title"*/-->
+        <!--/*@thymesVar id="title" type="home.library.entity.Title"*/-->
+        <option th:each="title:${titles}" th:text="${title.getName()}" th:value="${title.id}"/>
+    </select>
+    <button type="submit" th:text="'Добавить книгу'"/>
+</form>
+
+<table th:border="1">
+    <tr>
+        <th th:width="50" th:text="'ID'"/>
+        <th th:width="400" th:text="'Название'"/>
+        <th th:width="150" th:text="'Серийный номер'"/>
+    </tr>
+    <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="author" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="books" type="home.library.entity.Book"*/-->
+    <tr th:each="book:${books}">
+        <!--/*@thymesVar id="book" type="home.library.entity.Book"*/-->
+        <td th:text="${book.id}"/>
+        <td th:text="${book.title.name}"/>
+        <td th:text="${book.serialNumber}"/>
+        <td>
+                <a th:href="'/book/edit/'+${book.id}">
+                    <button th:text="'Изменить'"/>
+                </a>
+        </td>
+        <td>
+            <form th:action="@{/book/delete}" method="post">
+                <input type="hidden" name="id" th:value="${book.id}"/>
+                <button type="submit" th:text="'Удалить'"/>
+            </form>
+        </td>
+        <td>
+            <a th:href="'/book/client/'+${book.id}">
+                <button th:text="'КТО БРАЛ?!'"/>
+            </a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::site-head">
+    <title>читатель</title>
+    <script>
+        $(document).ready(function () {
+            $('#findAuthor select[name=authorIds]').select2({
+                placeholder: 'Авторы',
+                width: '80%',
+                allowClear: true
+            });
+            $('#findTitle select[name=titleList]').select2({
+                placeholder: 'Жанры',
+                width: '80%',
+                allowClear: true
+            });
+            $('#booksList select[name=bookList]').select2({
+                placeholder: 'Серийный номер',
+                width: '80%',
+                allowClear: true
+            })
+        });
+    </script>
+</head>
+<!--/*@thymesVar id="client" type="home.library.entity.Client"*/-->
+
+<body>
+<div th:replace="layout::header"></div>
+<div>
+    <form>
+        <div>
+            <h3 th:text="${client.personInfo.lastName+' '+client.personInfo.firstName+' '+client.personInfo.patronymic}"/>
+        </div>
+
+        <div>
+            Дата рождения <span th:text="${#dates.format(client.personInfo.birth, 'yyyy-MM-dd')}"/>
+        </div>
+        <div>
+            Телефон <span th:text="${client.phone}"/>
+        </div>
+        <div>
+            Адрес <span th:text="${client.address}"/>
+        </div>
+    </form>
+</div>
+<hr/>
+<!--/*@thymesVar id="client" type="home.library.entity.Client"*/-->
+<form th:action="@{/client/get_ticket}" method="post">
+    <!--/*@thymesVar id="books" type="home.library.entity.Book"*/-->
+    <!--/*@thymesVar id="book" type="home.library.entity.Book"*/-->
+    <!--/*@thymesVar id="tickets" type="home.library.entity.Ticket"*/-->
+    <!--/*@thymesVar id="ticket" type="home.library.entity.Ticket"*/-->
+
+    <!--/*@thymesVar id="titles" type="home.library.entity.Title"*/-->
+    <!--/*@thymesVar id="title" type="home.library.entity.Title"*/-->
+
+    <table border="1">
+        <tr>
+            <th th:width="150" th:text="'Серийный номер'"/>
+            <th th:width="150" th:text="'Дата выдачи'"/>
+            <th th:width="150" th:text="'Дата возврата'"/>
+        </tr>
+        <tr th:each="i:${MAX_ROWS_IN_TABLE}">
+            <td th:width="150">
+                <input type="text" name="serialNumber"/>
+            </td>
+
+            <td th:width="150">
+                <span type="date" th:text="${#dates.format(dateBegin,'dd.MM.yyyy')}"/>
+            </td>
+            <td th:width="150">
+                <input type="date" name="dateEnd"/>
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" name="id" th:value="${client.id}"/>
+    <button type="submit" th:text="'Оформить'"/>
+
+</form>
+<hr/>
+<!--/*@thymesVar id="t" type="home.library.entity.Ticket"*/-->
+
+На руках:
+<table border="1">
+    <tr>
+        <th th:width="150" th:text="'Серийный номер'"/>
+        <th th:width="400" th:text="'Название'"/>
+        <th th:width="500" th:text="'Автор'"/>
+        <th th:width="150" th:text="'Дата выдачи'"/>
+        <th th:width="150" th:text="'Дата закрытия'"/>
+        <th th:width="150" th:text="'Дата возврата'"/>
+    </tr>
+    <!--/*@thymesVar id="books" type="home.library.entity.Book"*/-->
+    <!--/*@thymesVar id="book" type="home.library.entity.Book"*/-->
+    <!--/*@thymesVar id="tickets" type="home.library.entity.Ticket"*/-->
+    <!--/*@thymesVar id="ticket" type="home.library.entity.Ticket"*/-->
+
+    <!--/*@thymesVar id="titles" type="home.library.entity.Title"*/-->
+    <!--/*@thymesVar id="title" type="home.library.entity.Title"*/-->
+
+    <!--<table border="1">-->
+    <tr th:each="t:${currentTicket}">
+        <tr th:if="${t.book!=null}">
+        <form th:action="@{/client/close_ticket}" method="post">
+
+            <td>
+                <span type="text" th:width="150" th:text="${t.book.serialNumber}"/>
+            </td>
+            <td>
+                <span type="text" th:width="400" th:text="${t.book.title.name}"/>
+            </td>
+            <td>
+                <span type="text" th:width="500" th:text="${t.book.title.authorsList()}"/>
+            </td>
+            <td>
+                <span type="date" th:width="150" th:text="${#dates.format(t.dateBegin,'dd.MM.yyyy')}"/>
+            </td>
+            <td>
+                <input type="date" th:width="150" name="dateClosed"/>
+            </td>
+            <td>
+                <span type="date" th:width="150" th:text="${#dates.format(t.dateEnd,'dd.MM.yyyy')}"/>
+            </td>
+            <td>
+                <input type="hidden" name="dateClosed"/>
+                <input type="hidden" name="ticketId" th:value="${t.id}"/>
+                <input type="hidden" name="id" th:value="${client.id}"/>
+                <button type="submit" th:text="'Сдать'"/>
+            </td>
+        </form>
+
+    </tr>
+
+    <tr th:if="${t.book==null}">
+        <td>
+            <span th:text="${'ticket#'+t.id+'has no book'}"/>
+        </td>
+    </tr>
+</tr>
+</table>
+<hr/>
+
+<form th:action="@{/client/close_ticket}" method="post">
+    Просрочено:
+    <table border="1">
+        <tr>
+            <th th:width="150" th:text="'Серийный номер'"/>
+            <th th:width="400" th:text="'Название'"/>
+            <th th:width="500" th:text="'Автор'"/>
+            <th th:width="150" th:text="'Дата выдачи'"/>
+            <th th:width="150" th:text="'Дата возврата'"/>
+        </tr>
+        <!--/*@thymesVar id="books" type="home.library.entity.Book"*/-->
+        <!--/*@thymesVar id="book" type="home.library.entity.Book"*/-->
+        <!--/*@thymesVar id="tickets" type="home.library.entity.Ticket"*/-->
+        <!--/*@thymesVar id="ticket" type="home.library.entity.Ticket"*/-->
+
+        <!--/*@thymesVar id="titles" type="home.library.entity.Title"*/-->
+        <!--/*@thymesVar id="title" type="home.library.entity.Title"*/-->
+        <tr th:each="ticket:${overdueTicket}">
+            <tr th:if="${ticket.book!=null}">
+            <td>
+                <span type="text" th:text="${ticket.getBook().getSerialNumber()}"/>
+            </td>
+            <td>
+                <span type="text" th:text="${ticket.getBook().getTitle().getName()}"/>
+            </td>
+            <td>
+                <span type="text" th:text="${ticket.getBook().getTitle().authorsList()}"/>
+            </td>
+            <td>
+                <span type="date" th:text="${#dates.format(ticket.getDateBegin(),'dd.MM.yyyy')}"/>
+            </td>
+            <td>
+                <input type="date" name="dateClosed"/>
+            </td>
+            <td>
+                <span type="date" th:text="${#dates.format(ticket.getDateEnd(),'dd.MM.yyyy')}"/>
+            </td>
+            <td>
+                <input type="hidden" name="dateClosed"/>
+                <input type="hidden" name="ticketId" th:value="${ticket.id}"/>
+                <input type="hidden" name="id" th:value="${client.id}"/>
+                <button type="submit" th:text="'Сдать'"/>
+            </td>
+        </tr>
+
+        <tr th:if="${ticket.book==null}">
+            <td>
+                <span th:text="${'ticket#'+t.id+'has no book'}"/>
+            </td>
+        </tr>
+    </tr>
+    </table>
+</form>
+<hr/>
+
+История:
+<table border="1">
+    <tr>
+        <th th:width="150" th:text="'Серийный номер'"/>
+        <th th:width="400" th:text="'Название'"/>
+        <th th:width="500" th:text="'Автор'"/>
+        <th th:width="150" th:text="'Дата выдачи'"/>
+        <th th:width="150" th:text="'Дата возврата'"/>
+    </tr>
+    <!--/*@thymesVar id="books" type="home.library.entity.Book"*/-->
+    <!--/*@thymesVar id="book" type="home.library.entity.Book"*/-->
+    <!--/*@thymesVar id="tickets" type="home.library.entity.Ticket"*/-->
+    <!--/*@thymesVar id="ticket" type="home.library.entity.Ticket"*/-->
+
+    <!--/*@thymesVar id="titles" type="home.library.entity.Title"*/-->
+    <!--/*@thymesVar id="title" type="home.library.entity.Title"*/-->
+
+    <tr th:each="ticket:${history}">
+        <tr th:if="${ticket.book!=null}">
+
+        <td>
+            <span type="text" th:text="${ticket.getBook().getSerialNumber()}"/>
+        </td>
+        <td>
+            <span type="text" th:text="${ticket.getBook().getTitle().name}"/>
+        </td>
+        <td>
+            <span type="text" th:text="${ticket.getBook().getTitle().authorsList()}"/>
+        </td>
+        <td>
+            <span type="date" th:text="${#dates.format(ticket.getDateBegin(),'dd.MM.yyyy')}"/>
+        </td>
+        <td>
+            <span type="date" th:text="${#dates.format(ticket.getDateClose(),'dd.MM.yyyy')}"/>
+        </td>
+    </tr>
+
+
+    <tr th:if="${ticket.book==null}">
+        <td>
+            <span th:text="${'ticket#'+ticket.id+'has no book'}"/>
+        </td>
+    </tr>
+</tr>
+</table>
+</body>
+</html>

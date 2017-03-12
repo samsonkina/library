@@ -1,0 +1,28 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>домашняя страничка :3</title>
+</head>
+<body>
+
+
+<div style="align-items: center">
+    <a th:href="'/client'">
+   <button  style="height:200px;width:200px;"  th:text="ЧИТАТЕЛИ"/>
+    </a>
+        <a th:href="'/author'">
+    <button  style="height:200px;width:200px;" th:text="АВТОРЫ"/>
+        </a>
+</div>
+
+<div style="align-items: center">
+    <a th:href="'/title'">
+    <button  style="height:200px;width:200px;"  th:text="ПРОИЗВЕДЕНИЯ"/>
+    </a>
+        <a th:href="'/book'">
+    <button  style="height:200px;width:200px;"  th:text="КНИГИ"/>
+        </a>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>читатель</title>
+</head>
+<body><div th:replace="layout::header"></div>
+<form th:action="@{/client/edit}" method="post">
+    <!--/*@thymesVar id="client" type="home.library.entity.Client"*/-->
+    Фамилия <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name="lastName" th:value="${client.personInfo.lastName}"/>
+    Имя <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name ="firstName" th:value="${client.personInfo.firstName}"/>
+    Отчество <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+"  name = "patronymic" th:value="${client.personInfo.patronymic}"/>
+    Дата рождения <input type="date" name = "birth" th:value="${#dates.format(client.personInfo.birth, 'yyyy-MM-dd')}"/>
+    Телефон  <input type="text" pattern="[0-9\\+\\-\\(\\)]+" name ="phone" th:value="${client.phone}"/>
+    Адрес <input type="text" name ="address" th:value="${client.address}"/>
+    <input type="hidden" name="id" th:value="${client.id}" />
+    <button type="submit"  th:text="'Подтвердить изменения'"/>
+</form>
+
+<!--/*@thymesVar id="client" type="home.library.entity.Client"*/-->
+
+</body>
+</html>

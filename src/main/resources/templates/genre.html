@@ -1,0 +1,37 @@
+
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>жанры</title>
+</head>
+<body><div th:replace="layout::header"></div>
+<form th:action="@{/genre/add}" method="post">
+    Название жанра <input type="text" name="name"/>
+    <button type="submit" th:text="'Добавить'"/>
+</form>
+<table>
+    <tr>
+        <th th:width="50" th:text="'ID'"/>
+        <th th:width="200" th:text="'Название'"/>
+    </tr>
+    <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="author" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="genres" type="home.library.entity.Genre"*/-->
+    <tr th:each="genre:${genres}">
+        <!--/*@thymesVar id="genre" type="home.library.entity.Genre"*/-->
+        <td th:text="${genre.id}"/>
+        <td th:text="${genre.name}"/>
+        <td>
+            <a th:href="'/genre/edit/'+${genre.id}">
+                <button th:text="'Изменить'"/>
+            </a>
+        </td>
+        <td>
+            <form th:action="@{/genre/delete}" method="post">
+                <input type="hidden" name="id" th:value="${genre.id}"/>
+                <button type="submit" th:text="'Удалить'"/>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

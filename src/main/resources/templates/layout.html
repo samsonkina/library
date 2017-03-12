@@ -1,0 +1,49 @@
+
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="site-head">
+    <script src="/common/js/jquery-3.1.1.min.js" type="application/javascript"/>
+    <script src="/common/js/select2/select2.min.js" type="application/javascript"/>
+    <link href="/common/css/select2/select2.min.css" rel="stylesheet" type="text/css"/>
+    <meta th:include="this::head" th:remove="tag" />
+</head>
+<head th:fragment="header">
+
+    <table>
+        <tr>
+            <th>
+                <a th:href="'/'">
+                    <button th:text="'Главная'"/>
+                </a>
+            </th>
+            <th>
+                <a th:href="'/client'">
+                    <button th:text="'Читатели'"/>
+                </a>
+            </th>
+            <th>
+                <a th:href="'/author'">
+                    <button th:text="'Авторы'"/>
+                </a>
+            </th>
+            <th>
+                <a th:href="'/book'">
+                    <button th:text="'Книги'"/>
+                </a>
+            </th>
+            <th>
+            <a th:href="'/title'">
+                <button th:text="'Произведения'"/>
+            </a>
+        </th>
+            <th>
+                <a th:href="'/genre'">
+                    <button th:text="'Жанры'"/>
+                </a>
+            </th>
+        </tr>
+    </table>
+    <meta th:include="this::head" th:remove="tag" />
+</head>
+<body>
+</body>
+</html>

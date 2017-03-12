@@ -1,0 +1,76 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::site-head">
+    <title>Произведения</title>
+    <script>
+        $(document).ready(function () {
+            $('#titleAddForm select[name=authorIds]').select2({
+                placeholder: 'Авторы',
+                width: '30%',
+                allowClear: true
+            });
+            $('#titleAddForm select[name=genreIds]').select2({
+                placeholder: 'Жанры',
+                width: '30%',
+                allowClear: true
+            })
+        });
+    </script>
+</head>
+<body>
+<div th:replace="layout::header"></div>
+<!--#include file="templates/header.html"-->
+<!--/*@thymesVar id="author" type="home.library.entity.Author"*/-->
+        <!--/*@thymesVar id="genre" type="home.library.entity.Genre"*/-->
+<form id="titleAddForm" th:action="@{/title/add}" method="post">
+    <input type="text" name="name" placeholder="Название"/>
+    <select name="authorIds" multiple="multiple">
+        <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+        <option th:each="author:${authors}" th:text="${author.personInfo.getFullName()}" th:value="${author.id}"/>
+    </select>
+    <select name="genreIds" multiple="multiple">
+        <!--/*@thymesVar id="genres" type="home.library.entity.Genre"*/-->
+        <option th:each="genre:${genres}" th:text="${genre.name}" th:value="${genre.id}"/>
+    </select>
+    <button type="submit" th:text="'Создать произведение'"/>
+</form>
+<table border="1">
+    <tr>
+        <th  th:width="50" th:text="'ID'"/>
+        <th th:width="400"  th:text="'Название'"/>
+        <th th:width="500"  th:text="'Автор'"/>
+        <th th:width="200"  th:text="'Жанр'"/>
+        <th th:width="50" th:text="'Книг в наличии'"/>
+    </tr>
+
+    <!--/*@thymesVar id="titles" type="home.library.entity.Title"*/-->
+    <!--/*@thymesVar id="title" type="home.library.entity.Title"*/-->
+    <tr th:each="title:${titles}">
+        <td th:text="${title.id}"/>
+        <td th:text="${title.name}"/>
+        <td>
+            <div  th:each="t:${title.authors}" >
+                <span th:text="${t.getPersonInfo().getFullName()}"/>
+            </div>
+        </td>
+        <td>
+            <div  th:each="genre:${title.genres}">
+                <span th:text="${genre.name}"/>
+            </div>
+        </td>
+        <!--<td th:text="${title.booksAvailable}"/>-->
+        <td th:text="${@bookRepository.countAvailableByTitleId(title.id)}"/>
+        <td>
+            <a th:href="'/title/edit/'+${title.id}">
+                <button th:text="'Изменить'"/>
+            </a>
+        </td>
+        <td>
+            <form th:action="@{/title/delete}" method="post">
+                <input type="hidden" name="id" th:value="${title.id}"/>
+                <button type="submit" th:text="'Удалить'"/>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

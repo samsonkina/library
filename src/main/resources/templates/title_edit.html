@@ -1,0 +1,41 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::site-head">
+    <title>Редактирование произведений</title>
+    <script>
+        $(document).ready(function () {
+            $('#titleEditForm select[name=authorIds]').select2({
+                placeholder: 'Авторы',
+                width: '30%',
+                allowClear: true
+            });
+            $('#titleEditForm select[name=genreIds]').select2({
+                placeholder: 'Жанры',
+                width: '30%',
+                allowClear: true
+            })
+        });
+    </script>
+</head>
+<body><div th:replace="layout::header"></div>
+<!--/*@thymesVar id="author" type="home.library.entity.Author"*/-->
+<!--/*@thymesVar id="genre" type="home.library.entity.Genre"*/-->
+    <!--/*@thymesVar id="title" type="home.library.entity.Title"*/-->
+        <!--/*@thymesVar id="genres" type="home.library.entity.Genre"*/-->
+        <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+<form id = "titleEditForm" th:action="@{/title/edit}" method="post">
+    <input type="text" name="name" th:value="${title.name}"/>
+    <select name="authorIds" multiple="multiple">
+        <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+        <option th:each="author:${authors}" th:text="${author.personInfo.getFullName()}" th:value="${author.id}"
+                th:selected="${title.authors.contains(author)}?'selected':null"/>
+    </select>
+    <select name="genreIds" multiple="multiple">
+        <!--/*@thymesVar id="genres" type="home.library.entity.Genre"*/-->
+        <option th:each="genre:${genres}" th:text="${genre.name}" th:value="${genre.id}"
+                th:selected="${title.genres.contains(genre)}?'selected':null"/>
+    </select>
+    <input type="hidden" name="id" th:value="${title.id}"/>
+    <button type="submit" th:text="'Изменить'"/>
+</form>
+</body>
+</html>

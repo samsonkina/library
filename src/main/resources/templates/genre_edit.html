@@ -1,0 +1,13 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактирование жанра</title>
+</head>
+<body><div th:replace="layout::header"></div>
+<!--/*@thymesVar id="genre" type="home.library.entity.Genre"*/-->
+<form th:action="@{/genre/edit}" method="post">
+    Название жанра <input type="text" name="name" th:value="${genre.name}"/>
+    <input type="hidden" name="id" th:value="${genre.id}"/>
+    <button type="submit" th:text="'Подтвердить изменения'"/>
+</form>
+</body>
+</html>

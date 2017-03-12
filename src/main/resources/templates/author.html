@@ -1,0 +1,45 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::site-head">
+    <title>Авторы</title>
+</head>
+<body>
+<div th:replace="layout::header"></div>
+<div>
+<form th:action="@{/author/add}" method="post">
+    Фамилия <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name="lastName"/>
+    Имя <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name="firstName"/>
+    Отчество <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name="patronymic"/>
+    <button type="submit" th:text="'Создать автора'"/>
+</form>
+</div>
+<div>
+    <table border="1px">
+    <tr>
+        <th th:width="50" th:text="'ID'"/>
+        <th th:width="200" th:text="'Фамилия'"/>
+        <th th:width="200" th:text="'Имя'"/>
+        <th th:width="200" th:text="'Отчество'"/>
+    </tr>
+    <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="author" type="home.library.entity.Author"*/-->
+    <tr th:each="author:${authors}">
+        <td  height="21" th:text="${author.id}"/>
+        <td height="21" th:text="${author.personInfo.lastName}"/>
+        <td  height="21" th:text="${author.personInfo.firstName}"/>
+        <td height="21" th:text="${author.personInfo.patronymic}"/>
+        <td height="21">
+                <a th:href="'/author/edit/'+${author.id}">
+                    <button type="button" th:text="'Изменить'"/>
+                </a>
+        </td>
+        <td th:height="21" align="center">
+            <form th:action="@{/author/delete}" method="post">
+                <input type="hidden" name="id" th:value="${author.id}"/>
+                <button  type="submit" th:text="'Удалить'"/>
+            </form>
+        </td>
+    </tr>
+</table>
+</div>
+</body>
+</html>

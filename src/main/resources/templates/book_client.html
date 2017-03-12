@@ -1,0 +1,49 @@
+
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::site-head">
+    <title>книги</title>
+</head>
+<body><div th:replace="layout::header"></div>
+<div>
+    <form><!--/*@thymesVar id="book" type="home.library.entity.Book"*/-->
+        <div>
+            Название
+            <h3 th:text="${book.title.name}"/>
+        </div>
+
+        <div>
+            Автор <span th:text="${book.title.authorsList()}"/>
+        </div>
+        <div>
+            Серийный номер <span th:text="${book.serialNumber}"/>
+        </div>
+    </form>
+</div>
+<hr/>
+<table th:border="1">
+    <tr>
+        <th th:width="50" th:text="'ID'"/>
+        <th th:width="200" th:text="'Фамилия'"/>
+        <th th:width="180" th:text="'Имя'"/>
+        <th th:width="200"  th:text="'Отчество'"/>
+        <th th:width="150"  th:text="'Дата рождения'"/>
+        <th th:width="200"  th:text="'Телефон'"/>
+        <th th:width="400"  th:text="'Адрес'"/>
+    </tr>
+    <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="author" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="clients" type="home.library.entity.Client"*/-->
+    <tr th:each="client:${clients}">
+        <!--/*@thymesVar id="client" type="home.library.entity.Client"*/-->
+        <td th:text="${client.id}"/>
+        <td th:text="${client.personInfo.lastName}"/>
+        <td th:text="${client.personInfo.firstName}"/>
+        <td th:text="${client.personInfo.patronymic}"/>
+        <td th:text="${#dates.format(client.personInfo.birth,'dd.MM.yyyy')}"/>
+        <td th:text="${client.phone}"/>
+        <td th:text="${client.address}"/>
+    </tr>
+</table>
+
+</body>
+</html>

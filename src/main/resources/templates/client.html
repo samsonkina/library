@@ -1,0 +1,59 @@
+
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>читатель</title>
+</head>
+<body><div th:replace="layout::header"></div>
+<form th:action="@{/client/add}" method="post">
+   Фамилия <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name="firstName"/>
+    Имя <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name ="lastName"/>
+    Отчество <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name = "patronymic"/>
+    <br/>
+    Дата рождения <input type="date" name = "birth"/>
+    Телефон  <input type="text"  pattern="[0-9\\+\\-\\(\\)]+" name ="phone"/>
+    Адрес <input type="text" name ="address"/>
+    <button type="submit" th:text="'Добавить клиента'"/>
+</form>
+<table th:border="1">
+    <tr>
+        <th th:width="50" th:text="'ID'"/>
+        <th th:width="200" th:text="'Фамилия'"/>
+        <th th:width="200" th:text="'Имя'"/>
+        <th th:width="200"  th:text="'Отчество'"/>
+        <th th:width="150"  th:text="'Дата рождения'"/>
+        <th th:width="200"  th:text="'Телефон'"/>
+        <th th:width="400"  th:text="'Адрес'"/>
+    </tr>
+    <!--/*@thymesVar id="authors" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="author" type="home.library.entity.Author"*/-->
+    <!--/*@thymesVar id="clients" type="home.library.entity.Client"*/-->
+    <tr th:each="client:${clients}">
+        <!--/*@thymesVar id="client" type="home.library.entity.Client"*/-->
+        <td th:text="${client.id}"/>
+        <td th:text="${client.personInfo.lastName}"/>
+        <td th:text="${client.personInfo.firstName}"/>
+        <td th:text="${client.personInfo.patronymic}"/>
+        <td th:text="${#dates.format(client.personInfo.birth,'dd.MM.yyyy')}"/>
+        <td th:text="${client.phone}"/>
+        <td th:text="${client.address}"/>
+        <td>
+            <a th:href="'/client/edit/'+${client.id}">
+                <button th:text="'Изменить'"/>
+            </a>
+        </td>
+        <td>
+            <form th:action="@{/client/delete}" method="post">
+                <input type="hidden" name="id" th:value="${client.id}"/>
+                <button type="submit" th:text="'Удалить'"/>
+            </form>
+        </td>
+        <td>
+
+            <a th:href="'/client/ticket/'+${client.id}">
+                <button th:text="'Выдать/Сдать Книги'"/>
+            </a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

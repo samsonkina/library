@@ -1,0 +1,15 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Авторы</title>
+</head>
+<body><div th:replace="layout::header"></div>
+<!--/*@thymesVar id="author" type="home.library.entity.Author"*/-->
+<form th:action="@{/author/edit}" method="post">
+    Фамилия <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name="lastName" th:value="${author.personInfo.lastName}"/>
+    Имя <input typr="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name ="firstName" th:value="${author.personInfo.firstName}"/>
+    Отчество <input type="text" pattern="[a-zA-Zа-яА-Я\-\'\s]+" name = "patronymic" th:value="${author.personInfo.patronymic}"/>
+    <input type="hidden" name="id" th:value="${author.id}"/>
+    <button type="submit" th:text="'Подтвердить изменения'"/>
+</form>
+</body>
+</html>
